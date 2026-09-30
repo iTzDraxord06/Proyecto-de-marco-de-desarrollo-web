@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Agendar Cita Médica - NovaSalud')}">
+    <meta charset="UTF-8">
+    <title>Agendar Cita Médica</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1; max-width: 600px; padding: 25px;">
+            <h2 style="color: #2f7f7f; margin-bottom: 20px;">Agendar Nueva Cita</h2>
+
+            <form th:action="@{/citas/guardar}" th:object="${cita}" method="post" style="background: white; padding: 25px; border-radius: 6px; border: 1px solid #ddd;">
+                
+                <!-- Selección de Paciente -->
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Paciente:</label>
+                    <select th:field="*{paciente.id}" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" required>
+                        <option value="">-- Seleccione un paciente --</option>
+                        <option th:each="p : ${pacientes}" th:value="${p.id}"
+                                th:text="${p.dni + ' - ' + p.nombre + ' ' + p.apellido}"></option>
+                    </select>
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('paciente')}" th:errors="*{paciente}"></span>
+                </div>
+
+                <!-- Selección de Especialidad -->
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Especialidad Médica:</label>
+                    <select th:field="*{especialidad}" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" required>
+                        <option value="">-- Seleccione Especialidad --</option>
+                        <option th:each="e : ${especialidades}" th:value="${e.nombre}" th:text="${e.nombre}"></option>
+                    </select>
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('especialidad')}" th:errors="*{especialidad}"></span>
+                </div>
+
+                <!-- Selección de Médico -->
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Médico Asignado:</label>
+                    <select th:field="*{medico}" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;" required>
+                        <option value="">-- Seleccione Médico --</option>
+                        <option th:each="m : ${medicos}" th:value="${m.nombreCompleto}" th:text="${m.nombreCompleto}"></option>
+                    </select>
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('medico')}" th:errors="*{medico}"></span>
+                </div>
+
+                <!-- Fecha -->
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Fecha:</label>
+                    <input type="date" th:field="*{fecha}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" required />
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('fecha')}" th:errors="*{fecha}"></span>
+                </div>
+
+                <!-- Hora -->
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Hora:</label>
+                    <input type="time" th:field="*{hora}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" required />
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('hora')}" th:errors="*{hora}"></span>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn-clinica" style="padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        Agendar Cita
+                    </button>
+                    <a th:href="@{/citas}" style="margin-left: 15px; color: #555; text-decoration: none;">Cancelar</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

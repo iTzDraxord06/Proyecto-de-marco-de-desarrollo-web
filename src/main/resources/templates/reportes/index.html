@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Reportes Clínicos - NovaSalud')}">
+    <meta charset="UTF-8">
+    <title>Reportes</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1; padding: 25px;">
+            <h2 style="color: #2f7f7f; margin: 0 0 20px 0;">Módulo de Reportes Clínicos</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                <div style="background: white; border: 1px solid #ddd; padding: 15px; border-radius: 6px; text-align: center;">
+                    <div style="color: #666; font-size: 13px;">Total Citas</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #333;" th:text="${totalCitas}">0</div>
+                </div>
+                <div style="background: white; border: 1px solid #ddd; padding: 15px; border-radius: 6px; text-align: center;">
+                    <div style="color: #666; font-size: 13px;">Programadas</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #2e7d32;" th:text="${programadas}">0</div>
+                </div>
+                <div style="background: white; border: 1px solid #ddd; padding: 15px; border-radius: 6px; text-align: center;">
+                    <div style="color: #666; font-size: 13px;">Atendidas</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #1976d2;" th:text="${atendidas}">0</div>
+                </div>
+                <div style="background: white; border: 1px solid #ddd; padding: 15px; border-radius: 6px; text-align: center;">
+                    <div style="color: #666; font-size: 13px;">Canceladas</div>
+                    <div style="font-size: 24px; font-weight: bold; color: #d32f2f;" th:text="${canceladas}">0</div>
+                </div>
+            </div>
+            <div style="background: white; border: 1px solid #ddd; border-radius: 6px;">
+                <div style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #ddd; color: #333;">
+                    Reporte de Atenciones Realizadas
+                </div>
+                <table class="table-clinica" border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Especialidad</th>
+                            <th>Médico</th>
+                            <th>Fecha</th>
+                            <th>Diagnóstico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c : ${citasAtendidas}">
+                            <td th:text="${c.paciente.nombre + ' ' + c.paciente.apellido}"></td>
+                            <td th:text="${c.especialidad}"></td>
+                            <td th:text="${c.medico}"></td>
+                            <td th:text="${c.fecha}"></td>
+                            <td th:text="${c.diagnostico}"></td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(citasAtendidas)}">
+                            <td colspan="5" style="text-align: center; color: #777; padding: 20px;">No se registran atenciones culminadas todavía.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

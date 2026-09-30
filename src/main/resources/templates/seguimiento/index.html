@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Historial y Seguimiento - NovaSalud')}">
+    <meta charset="UTF-8">
+    <title>Seguimiento Clínico</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1; padding: 25px;">
+            <h2 style="color: #2f7f7f; margin: 0 0 20px 0;">Historial de Seguimiento Clínico</h2>
+
+            <table class="table-clinica" border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background: white; border: 1px solid #ddd;">
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Paciente</th>
+                        <th>Médico Tratante</th>
+                        <th>Especialidad</th>
+                        <th>Fecha Atención</th>
+                        <th>Diagnóstico / Plan de Seguimiento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="h : ${historial}">
+                        <td th:text="${h.paciente.dni}"></td>
+                        <td th:text="${h.paciente.nombre + ' ' + h.paciente.apellido}"></td>
+                        <td th:text="${h.medico}"></td>
+                        <td th:text="${h.especialidad}"></td>
+                        <td th:text="${h.fecha}"></td>
+                        <td th:text="${h.diagnostico}" style="font-style: italic; color: #2e7d32;"></td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(historial)}">
+                        <td colspan="6" style="text-align: center; color: #777; padding: 20px;">
+                            No hay seguimientos registrados. Atienda citas en el módulo de Citas para generar historial.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

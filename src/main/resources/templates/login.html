@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="[http://www.thymeleaf.org](http://www.thymeleaf.org)">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - Clínica</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body>
+    <div style="max-width: 360px; margin: 80px auto; text-align: center;">
+        <img th:src="@{/imagenes/Logo.jpg}" alt="Logo" width="120" style="margin-bottom: 20px;">
+        <h2>Acceso al Sistema</h2>
+
+        <div th:if="${param.error}" style="color: red; margin-bottom: 10px;">
+            Usuario o contraseña incorrectos.
+        </div>
+        <div th:if="${param.logout}" style="color: green; margin-bottom: 10px;">
+            Sesión cerrada correctamente.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div style="margin-bottom: 12px; text-align: left;">
+                <label>Usuario:</label>
+                <input type="text" name="username" required style="width: 100%; box-sizing: border-box;">
+            </div>
+            <div style="margin-bottom: 15px; text-align: left;">
+                <label>Contraseña:</label>
+                <input type="password" name="password" required style="width: 100%; box-sizing: border-box;">
+            </div>
+            <button type="submit" style="width: 100%; padding: 8px; cursor: pointer;">Ingresar</button>
+        </form>
+    </div>
+</body>
+</html>

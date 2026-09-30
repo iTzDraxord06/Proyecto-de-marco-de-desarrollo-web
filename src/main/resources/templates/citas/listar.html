@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Citas Médicas')}">
+    <meta charset="UTF-8">
+    <title>Citas Médicas</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: #2f7f7f; margin: 0;">Control de Citas</h2>
+                <a sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')" th:href="@{/citas/registrar}">
+                    <button class="btn-clinica" style="padding: 10px 18px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        + Agendar Nueva Cita
+                    </button>
+                </a>
+            </div>
+
+            <table class="table-clinica" border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background: white; border: 1px solid #ddd;">
+                <thead>
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Especialidad</th>
+                        <th>Médico</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Estado</th>
+                        <th>Diagnóstico / Observación</th>
+                        <th style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="c : ${citas}">
+                        <td th:text="${c.paciente.nombre + ' ' + c.paciente.apellido}"></td>
+                        <td th:text="${c.especialidad}"></td>
+                        <td th:text="${c.medico}"></td>
+                        <td th:text="${c.fecha}"></td>
+                        <td th:text="${c.hora}"></td>
+                        <td>
+                            <span th:text="${c.estado}"
+                                  th:style="${c.estado == 'CANCELADA' ? 'color: red; font-weight: bold;' : (c.estado == 'ATENDIDO' ? 'color: blue; font-weight: bold;' : 'color: green; font-weight: bold;')}">
+                            </span>
+                        </td>
+                        <td th:text="${c.diagnostico != null ? c.diagnostico : '-'}"></td>
+                        <td style="text-align: center;">
+                            <!-- Botón para cancelar (Admin / Recepción) -->
+                            <a th:if="${c.estado == 'PROGRAMADA'}"
+                               sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')"
+                               th:href="@{/citas/cancelar/{id}(id=${c.id})}"
+                               onclick="return confirm('¿Seguro que desea cancelar la cita?')"
+                               style="color: red; text-decoration: none;">Cancelar</a>
+
+                            <!-- Formulario rápido para el Médico (RF-19) -->
+                            <form th:if="${c.estado == 'PROGRAMADA'}"
+                                  sec:authorize="hasAuthority('ROLE_MEDICO')"
+                                  th:action="@{/citas/atender/{id}(id=${c.id})}" method="post" style="display: flex; gap: 5px;">
+                                <input type="text" name="diagnostico" placeholder="Diagnóstico..." required style="padding: 4px; font-size: 12px;">
+                                <button type="submit" class="btn-clinica" style="padding: 4px 8px; font-size: 12px; cursor: pointer;">Atender</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(citas)}">
+                        <td colspan="8" style="text-align: center; color: #777; padding: 20px;">No hay citas registradas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

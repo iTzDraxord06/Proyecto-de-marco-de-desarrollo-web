@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Formulario de Paciente')}">
+    <meta charset="UTF-8">
+    <title>Formulario Paciente</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1; max-width: 500px;">
+            <h2 style="color: #2f7f7f; margin-bottom: 20px;" th:text="${paciente.id != null} ? 'Modificar Paciente' : 'Registrar Paciente'"></h2>
+
+            <form th:action="@{/pacientes/guardar}" th:object="${paciente}" method="post" style="background: white; padding: 25px; border-radius: 6px; border: 1px solid #ddd;">
+                <input type="hidden" th:field="*{id}" />
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">DNI:</label>
+                    <input type="text" th:field="*{dni}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" />
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Nombres:</label>
+                    <input type="text" th:field="*{nombre}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" />
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Apellidos:</label>
+                    <input type="text" th:field="*{apellido}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" />
+                    <span style="color: red; font-size: 0.85em;" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></span>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-weight: bold; display: block; margin-bottom: 5px;">Teléfono:</label>
+                    <input type="text" th:field="*{telefono}" style="width: 100%; padding: 8px; box-sizing: border-box; border-radius: 4px; border: 1px solid #ccc;" />
+                </div>
+
+                <div>
+                    <button type="submit" class="btn-clinica" style="padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        Guardar Paciente
+                    </button>
+                    <a th:href="@{/pacientes}" style="margin-left: 15px; color: #555; text-decoration: none;">Cancelar</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

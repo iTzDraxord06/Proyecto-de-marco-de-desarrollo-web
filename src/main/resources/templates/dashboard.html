@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head('Panel Principal - NovaSalud')}">
+    <meta charset="UTF-8">
+    <title>Panel Principal</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <!-- Barra lateral unificada -->
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1; padding: 25px;">
+            <h2 style="margin: 0; font-size: 22px; color: #333;">Panel principal</h2>
+            <p style="color: #666; margin-top: 4px; margin-bottom: 25px; font-size: 14px;">Resumen general de la clínica.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                
+                <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; text-align: center;">
+                    <div style="color: #666; font-size: 14px; margin-bottom: 8px;">Pacientes</div>
+                    <div style="color: #2f7f7f; font-size: 32px; font-weight: bold;" th:text="${totalPacientes}">0</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; text-align: center;">
+                    <div style="color: #666; font-size: 14px; margin-bottom: 8px;">Citas de hoy</div>
+                    <div style="color: #2f7f7f; font-size: 32px; font-weight: bold;" th:text="${citasHoy}">0</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; text-align: center;">
+                    <div style="color: #666; font-size: 14px; margin-bottom: 8px;">Médicos</div>
+                    <div style="color: #2f7f7f; font-size: 32px; font-weight: bold;" th:text="${totalMedicos}">4</div>
+                </div>
+
+                <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; padding: 20px; text-align: center;">
+                    <div style="color: #666; font-size: 14px; margin-bottom: 8px;">Pendientes</div>
+                    <div style="color: #2f7f7f; font-size: 32px; font-weight: bold;" th:text="${totalPendientes}">0</div>
+                </div>
+
+            </div>
+
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                <div style="padding: 12px 16px; font-weight: bold; border-bottom: 1px solid #e0e0e0; color: #333;">
+                    Próximas citas
+                </div>
+
+                <table class="table-clinica" border="0" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Paciente</th>
+                            <th style="text-align: left;">Especialidad</th>
+                            <th style="text-align: left;">Médico</th>
+                            <th style="text-align: left;">Hora</th>
+                            <th style="text-align: left;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c : ${proximasCitas}">
+                            <td th:text="${c.paciente.nombre + ' ' + c.paciente.apellido}"></td>
+                            <td th:text="${c.especialidad}"></td>
+                            <td th:text="${c.medico}"></td>
+                            <td th:text="${c.hora}"></td>
+                            <td>
+                                <span th:text="${c.estado}" 
+                                      th:style="${c.estado == 'CANCELADA' ? 'color: red;' : 'color: inherit;'}">
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(proximasCitas)}">
+                            <td colspan="5" style="text-align: center; color: #888; padding: 20px;">
+                                No hay citas registradas en el sistema.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head('Gestión de Pacientes')}">
+    <meta charset="UTF-8">
+    <title>Pacientes</title>
+</head>
+<body>
+
+    <header th:replace="~{layout :: header}"></header>
+
+    <div style="display: flex;">
+        <aside th:replace="~{layout :: sidebar}"></aside>
+
+        <main class="contenido" style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="color: #2f7f7f; margin: 0;">Panel de Pacientes</h2>
+                
+                <a sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')" th:href="@{/pacientes/nuevo}">
+                    <button class="btn-clinica" style="padding: 10px 18px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        + Registrar Paciente
+                    </button>
+                </a>
+            </div>
+
+            <table class="table-clinica" border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background: white; border: 1px solid #ddd;">
+                <thead>
+                    <tr>
+                        <th>DNI</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Teléfono</th>
+                        <th sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')" style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${pacientes}">
+                        <td th:text="${p.dni}"></td>
+                        <td th:text="${p.nombre}"></td>
+                        <td th:text="${p.apellido}"></td>
+                        <td th:text="${p.telefono}"></td>
+                        <td sec:authorize="hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPCIONISTA')" style="text-align: center;">
+                            <a th:href="@{/pacientes/editar/{id}(id=${p.id})}" style="color: #2f7f7f; font-weight: bold; text-decoration: none;">Editar</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(pacientes)}">
+                        <td colspan="5" style="text-align: center; color: #777; padding: 20px;">No hay pacientes registrados aún en el sistema.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

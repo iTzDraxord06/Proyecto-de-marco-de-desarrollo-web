@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}">Sistema Web de Gestión Clínica - NovaSalud</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+
+    <header th:fragment="header" class="encabezado">
+        <button class="boton-menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 style="margin: 0; font-size: 22px;">Sistema Web de Gestión Clínica - NovaSalud</h1>
+    </header>
+
+    <aside th:fragment="sidebar" id="menuLateral" class="menu-lateral">
+
+        <div
+            style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #444; font-size: 0.85em; color: #aaa;">
+            Usuario: <strong style="color: #fff;" sec:authentication="name">Usuario</strong>
+        </div>
+
+        <div
+            style="font-weight: bold; color: #aaa; margin-bottom: 12px; text-transform: uppercase; font-size: 0.8em; letter-spacing: 0.05em;">
+            Menú
+        </div>
+
+        <a th:href="@{/dashboard}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'inicio' ? 'activo' : ''}">Inicio</button>
+        </a>
+
+        <a th:href="@{/pacientes}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'pacientes' ? 'activo' : ''}">Pacientes</button>
+        </a>
+
+        <a th:href="@{/citas}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'citas' ? 'activo' : ''}">Citas</button>
+        </a>
+
+        <a th:href="@{/medicos}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'medicos' ? 'activo' : ''}">Médicos</button>
+        </a>
+
+        <a th:href="@{/servicios}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'servicios' ? 'activo' : ''}">Servicios</button>
+        </a>
+
+        <button type="button" class="btn-menu" style="opacity: 0.45; cursor: not-allowed;"
+            title="Próxima versión">Inventario</button>
+        <a th:href="@{/reportes}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'reportes' ? 'activo' : ''}">Reportes</button>
+        </a>
+
+        <a th:href="@{/seguimiento}" style="text-decoration: none;">
+            <button type="button" class="btn-menu"
+                th:classappend="${seccionActiva == 'seguimiento' ? 'activo' : ''}">Seguimiento</button>
+        </a>
+        <button type="button" class="btn-menu" style="opacity: 0.45; cursor: not-allowed;"
+            title="Próxima versión">Usuarios</button>
+
+        <form th:action="@{/logout}" method="post" style="margin-top: 30px;">
+            <button type="submit" class="btn-menu"
+                style="background-color: #8b0000; text-align: center; font-weight: bold;">
+                Cerrar Sesión
+            </button>
+        </form>
+    </aside>
+
+</body>
+
+</html>
